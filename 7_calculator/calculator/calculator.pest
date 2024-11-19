@@ -1,0 +1,21 @@
+// Пробіли між цифрами не допускаються
+integer = @{ ASCII_DIGIT+ }
+
+unary_minus = { "-" }
+primary = _{ integer | "(" ~ expr ~ ")" }
+atom = _{ unary_minus? ~ primary }
+
+bin_op = _{ add | subtract | multiply | divide | modulo }
+	add = { "+" }
+	subtract = { "-" }
+	multiply = { "*" }
+	divide = { "/" }
+	modulo = { "%" }
+
+expr = { atom ~ (bin_op ~ atom)* }
+
+// Ми не можемо мати SOI та EOI безпосередньо на expr, тому що він використовується
+// рекурсивно (наприклад, у круглих дужках)
+equation = _{ SOI ~ expr ~ EOI }
+
+WHITESPACE = _{ " " }
