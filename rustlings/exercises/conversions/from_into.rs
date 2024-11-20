@@ -33,10 +33,22 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
+// I AM DONE
 
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let vals: Vec<String> = s.split(",").map(|v| v.to_string()).collect();
+        if vals.len() != 2 { return Person::default(); }
+        
+        if let Ok(n) = vals[1].parse::<usize>() {
+            if vals[0].len() > 0 {
+                return Person {
+                    name: vals[0].clone(),
+                    age: n
+                }
+            }
+        }
+        Person::default()
     }
 }
 
